@@ -2,8 +2,13 @@ from cli_chess.core.game.openings_trainer import OpeningsTrainerModel, OpeningsT
 from cli_chess.core.game import GamePresenterBase
 from cli_chess.utils.ui_common import change_views
 from cli_chess.utils import log, AlertType, EventTopics
+from prompt_toolkit.application import get_app
 from chess import Move
 from typing import Optional
+
+# Delay (seconds) between the trainee's move being shown and the opponent's
+# auto-played reply appearing, so the two don't render as a single instant jump
+OPPONENT_REPLY_DELAY_SECONDS = 0.8
 
 
 def start_openings_trainer(repertoire_color: str) -> None:
@@ -42,15 +47,31 @@ class OpeningsTrainerPresenter(GamePresenterBase):
                 raise Warning("Not your turn")
 
             if self.model.submit_move(move):
-                # A completion alert may have already been shown by update() as a
-                # side effect of submit_move() finishing the repertoire - don't clobber it
-                if not self.model.is_training_complete():
-                    self.view.alert.clear_alert()
+                self.view.alert.clear_alert()
+                self._schedule_continue_training()
             else:
                 self.view.alert.show_alert("Incorrect move", AlertType.ERROR)
         except Exception as e:
             log.error(e)
             self.view.alert.show_alert(str(e))
+
+    def _schedule_continue_training(self) -> None:
+        """Auto-plays the opponent's repertoire reply after OPPONENT_REPLY_DELAY_SECONDS,
+           so it doesn't appear on screen at the same instant as the trainee's own move
+        """
+        loop = get_app().loop
+        if loop:
+            loop.call_later(OPPONENT_REPLY_DELAY_SECONDS, self._continue_training)
+        else:
+            self._continue_training()
+
+    def _continue_training(self) -> None:
+        """Advances training past the trainee's move. A completion alert may have
+           already been shown by update() as a side effect - don't clobber it
+        """
+        self.model.continue_training()
+        if not self.model.is_training_complete():
+            self.view.alert.clear_alert()
 
     def reveal_move(self) -> None:
         """Reveals the move expected at the current position, without making it"""

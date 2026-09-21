@@ -65,8 +65,14 @@ class OpeningsTrainerModel(GameModelBase):
 
         self.board_model.make_move(move)
         self.current_move_index += 1
-        self._advance_after_correct_move()
         return True
+
+    def continue_training(self) -> None:
+        """Auto-plays the opponent's repertoire reply (and any further advancement)
+           following a correct trainee move. Called by the presenter - optionally
+           after a delay so the reply isn't shown to the trainee instantly.
+        """
+        self._advance_after_correct_move()
 
     def reveal_current_move(self) -> Optional[Move]:
         """Returns the move expected at the current position, without making it"""

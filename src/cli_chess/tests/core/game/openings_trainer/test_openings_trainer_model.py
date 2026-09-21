@@ -45,9 +45,12 @@ def test_black_model_autoplays_whites_opening_move_on_init(black_model):
 
 def test_submit_move_correct_advances_index_and_pushes_move(white_model):
     assert white_model.submit_move("e4") is True
-    # index advances by 2: the trainee's move plus the auto-played opponent reply
-    assert white_model.current_move_index == 2
+    assert white_model.current_move_index == 1
     assert white_model.board_model.board.move_stack[0].uci() == "e2e4"
+
+    # index advances again once the opponent's reply is auto-played
+    white_model.continue_training()
+    assert white_model.current_move_index == 2
 
 
 def test_submit_move_incorrect_returns_false_and_does_not_mutate_board(white_model):
@@ -59,11 +62,13 @@ def test_submit_move_incorrect_returns_false_and_does_not_mutate_board(white_mod
 def test_submit_move_accepts_alternate_san_for_same_move(black_model):
     # Black model has already had 1.e4 auto-played; White's Nf3 auto-plays after e5
     black_model.submit_move("e5")
+    black_model.continue_training()
     assert black_model.submit_move("Nb8c6") is True
 
 
 def test_opponent_moves_auto_play_after_correct_trainee_move(white_model):
     white_model.submit_move("e4")
+    white_model.continue_training()
     # Black's e5 (or c5) should have auto-played, leaving it White's turn again
     assert white_model.is_my_turn() is True
     assert white_model.current_move_index == 2
@@ -72,7 +77,9 @@ def test_opponent_moves_auto_play_after_correct_trainee_move(white_model):
 
 def test_line_completion_resets_board_and_advances_to_next_line(white_model):
     white_model.submit_move("e4")
+    white_model.continue_training()
     white_model.submit_move("Nf3")
+    white_model.continue_training()
 
     assert white_model.current_line_index == 1
     assert white_model.current_move_index == 0
@@ -82,9 +89,13 @@ def test_line_completion_resets_board_and_advances_to_next_line(white_model):
 
 def test_full_repertoire_completion_sets_training_complete(white_model):
     white_model.submit_move("e4")
+    white_model.continue_training()
     white_model.submit_move("Nf3")
+    white_model.continue_training()
     white_model.submit_move("e4")
+    white_model.continue_training()
     white_model.submit_move("Nf3")
+    white_model.continue_training()
 
     assert white_model.is_training_complete() is True
     with pytest.raises(Warning):
@@ -106,7 +117,9 @@ def test_acknowledge_revealed_move_pushes_move_and_advances(white_model):
 
 def test_shared_opening_moves_are_requizzed_across_lines(white_model):
     white_model.submit_move("e4")
+    white_model.continue_training()
     white_model.submit_move("Nf3")
+    white_model.continue_training()
     assert white_model.current_line_index == 1
 
     # 1.e4 must be required again for the second line, with no memory of line 1
