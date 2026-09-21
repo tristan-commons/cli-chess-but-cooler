@@ -4,6 +4,7 @@ from enum import Enum
 
 class OfflineGamesMenuOptions(Enum):
     VS_COMPUTER = "Play vs Computer"
+    TRAIN_OPENINGS = "Train Openings"
 
 
 class OfflineGamesMenuModel(MenuModel):
@@ -15,7 +16,8 @@ class OfflineGamesMenuModel(MenuModel):
     def _create_menu() -> MenuCategory:
         """Create the menu options"""
         menu_options = [
-            MenuOption(OfflineGamesMenuOptions.VS_COMPUTER, "Play offline against the computer")
+            MenuOption(OfflineGamesMenuOptions.VS_COMPUTER, "Play offline against the computer"),
+            MenuOption(OfflineGamesMenuOptions.TRAIN_OPENINGS, "Practice your opening repertoire"),
         ]
 
         return MenuCategory("Offline Games", menu_options)

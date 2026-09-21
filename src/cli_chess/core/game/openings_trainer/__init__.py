@@ -1,0 +1,3 @@
+from .openings_trainer_model import OpeningsTrainerModel
+from .openings_trainer_view import OpeningsTrainerView
+from .openings_trainer_presenter import OpeningsTrainerPresenter
