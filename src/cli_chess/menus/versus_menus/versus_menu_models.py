@@ -18,23 +18,22 @@ class OfflineVsComputerMenuModel(VersusMenuModel):
         """Create the offline menu options"""
         menu_options = [
             MultiValueMenuOption(GameOption.VARIANT, "Choose the variant to play", [option for option in OfflineGameOptions.variant_options_dict]),  # noqa: E501
-            MultiValueMenuOption(GameOption.SPECIFY_ELO, "Would you like the computer to play as a specific Elo?", ["No", "Yes"]),
-            MultiValueMenuOption(GameOption.COMPUTER_SKILL_LEVEL, "Choose the skill level of the computer", [option for option in OfflineGameOptions.skill_level_options_dict]),  # noqa: E501
-            MultiValueMenuOption(GameOption.COMPUTER_ELO, "Choose the Elo of the computer", list(range(500, 2850, 25)), visible=False),
+            MultiValueMenuOption(GameOption.ENGINE, "Choose the engine to play against", [option for option in OfflineGameOptions.engine_options_dict]),  # noqa: E501
+            MultiValueMenuOption(GameOption.COMPUTER_ELO, "Choose the strength of the computer", list(OfflineGameOptions.fairy_stockfish_elo_range)),
             MultiValueMenuOption(GameOption.COLOR, "Choose the side you would like to play as", [option for option in OfflineGameOptions.color_options]),  # noqa: E501
         ]
         return MenuCategory("Play Offline vs Computer", menu_options)
 
-    def show_elo_selection_option(self, show: bool):
-        """Show/hide the Computer Elo option. Enabling the 'Specify Elo' selection
-           Will disable the 'Computer SKill' Level option as only of these can be set
+    def update_elo_range_for_engine(self, engine: str):
+        """Updates the Computer Elo option's selectable values to match the
+           range appropriate for the selected engine (each engine has a
+           different set of strength levels it supports)
         """
-        # Todo: Figure out a cleaner way so a loop isn't required
-        for i, opt in enumerate(self.menu.category_options):
+        elo_range = OfflineGameOptions.maia_elo_range if engine == "Maia" else OfflineGameOptions.fairy_stockfish_elo_range
+        for opt in self.menu.category_options:
             if opt.option == GameOption.COMPUTER_ELO:
-                opt.visible = show
-            if opt.option == GameOption.COMPUTER_SKILL_LEVEL:
-                opt.visible = not show
+                opt.values = list(elo_range)
+                opt.selected_value = {"index": 0, "name": opt.values[0]}
 
 
 class OnlineVsComputerMenuModel(VersusMenuModel):

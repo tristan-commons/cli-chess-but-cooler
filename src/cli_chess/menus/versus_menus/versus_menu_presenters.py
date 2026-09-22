@@ -51,8 +51,8 @@ class OfflineVersusMenuPresenter(VersusMenuPresenter):
         selected_option = menu_item.option
         selected_value = menu_item.selected_value['name']
 
-        if selected_option == GameOption.SPECIFY_ELO:
-            self.model.show_elo_selection_option(selected_value == "Yes")
+        if selected_option == GameOption.ENGINE:
+            self.model.update_elo_range_for_engine(selected_value)
 
     def handle_start_game(self) -> None:
         """Starts the game using the currently selected menu values"""

@@ -17,6 +17,10 @@ class EnginePresenter:
         """Notify the engine to get the best move from the current position"""
         return self.model.get_best_move()
 
+    def get_display_name(self) -> str:
+        """Returns the display name of the selected engine opponent"""
+        return self.model.get_display_name()
+
     def quit_engine(self) -> None:
         """Calls the model to notify the engine to quit"""
         self.model.quit_engine()

@@ -1,4 +1,3 @@
-from cli_chess.utils.common import str_to_bool
 from enum import Enum
 from types import MappingProxyType
 from typing import Dict
@@ -8,8 +7,8 @@ from abc import ABC, abstractmethod
 class GameOption(Enum):
     VARIANT = "Variant"
     TIME_CONTROL = "Time Control"
+    ENGINE = "Engine"
     COMPUTER_SKILL_LEVEL = "Computer Level"
-    SPECIFY_ELO = "Specify Elo"
     COMPUTER_ELO = "Computer Elo"
     RATED = "Rated"
     RATING_RANGE = "Rating Range"
@@ -31,9 +30,6 @@ class BaseGameOptions(ABC):
         for key in menu_selections:
             try:
                 value = menu_selections[key]
-                if key == GameOption.SPECIFY_ELO:
-                    value = str_to_bool(value)
-
                 opt_dict = self.dict_map.get(key)
                 if opt_dict:
                     game_parameters[key] = opt_dict.get(value)
@@ -93,11 +89,15 @@ class OfflineGameOptions(BaseGameOptions):
         self.dict_map = {
             GameOption.VARIANT: BaseGameOptions.variant_options_dict,
             GameOption.TIME_CONTROL: self.time_control_options_dict,
-            GameOption.COMPUTER_SKILL_LEVEL: BaseGameOptions.skill_level_options_dict,
-            GameOption.SPECIFY_ELO: None,
+            GameOption.ENGINE: self.engine_options_dict,
             GameOption.COMPUTER_ELO: None,
             GameOption.COLOR: BaseGameOptions.color_options,
         }
+
+    engine_options_dict = MappingProxyType({
+        "Fairy-Stockfish": "fairy-stockfish",
+        "Maia": "maia",
+    })
 
     time_control_options_dict = dict(BaseGameOptions.time_control_options_dict)
     additional_time_controls = {
@@ -109,6 +109,9 @@ class OfflineGameOptions(BaseGameOptions):
         "1+0 (Bullet)": (1, 0),
     }
     time_control_options_dict.update(additional_time_controls)
+
+    fairy_stockfish_elo_range = list(range(500, 2850, 25))
+    maia_elo_range = list(range(1100, 2000, 100))
 
 
 class OnlinePublicGameOptions(BaseGameOptions):
