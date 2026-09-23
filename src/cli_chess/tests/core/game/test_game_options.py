@@ -1,4 +1,4 @@
-from cli_chess.core.game.game_options import GameOption, OnlineDirectChallengesGameOptions, OnlineVsComputerGameOptions
+from cli_chess.core.game.game_options import GameOption, OfflineGameOptions, OnlineDirectChallengesGameOptions, OnlineVsComputerGameOptions  # noqa: E501
 
 
 def test_direct_challenge_game_parameters():
@@ -42,5 +42,39 @@ def test_online_vs_computer_game_parameters():
         GameOption.VARIANT: "standard",
         GameOption.TIME_CONTROL: (5, 3),
         GameOption.COMPUTER_SKILL_LEVEL: 3,
+        GameOption.COLOR: "black",
+    }
+
+
+def test_offline_vs_fairy_stockfish_game_parameters():
+    menu_selections = {
+        GameOption.VARIANT: "Standard",
+        GameOption.TIME_CONTROL: "5+3 (Blitz)",
+        GameOption.ENGINE: "Fairy-Stockfish",
+        GameOption.COMPUTER_ELO: 1500,
+        GameOption.COLOR: "White",
+    }
+    assert OfflineGameOptions().create_game_parameters_dict(menu_selections) == {
+        GameOption.VARIANT: "standard",
+        GameOption.TIME_CONTROL: (5, 3),
+        GameOption.ENGINE: "fairy-stockfish",
+        GameOption.COMPUTER_ELO: 1500,
+        GameOption.COLOR: "white",
+    }
+
+
+def test_offline_vs_maia_game_parameters():
+    menu_selections = {
+        GameOption.VARIANT: "Standard",
+        GameOption.TIME_CONTROL: "5+3 (Blitz)",
+        GameOption.ENGINE: "Maia",
+        GameOption.COMPUTER_ELO: 1500,
+        GameOption.COLOR: "Black",
+    }
+    assert OfflineGameOptions().create_game_parameters_dict(menu_selections) == {
+        GameOption.VARIANT: "standard",
+        GameOption.TIME_CONTROL: (5, 3),
+        GameOption.ENGINE: "maia",
+        GameOption.COMPUTER_ELO: 1500,
         GameOption.COLOR: "black",
     }

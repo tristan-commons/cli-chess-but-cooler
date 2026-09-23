@@ -4,7 +4,7 @@
 
 <p align="center">
 A highly customizable way to play chess in your terminal. Supports playing online (via Lichess.org) and
-offline against the Fairy-Stockfish engine. All Lichess variants are supported.
+offline against the Fairy-Stockfish or Maia engines. All Lichess variants are supported.
 </p>
 
 <p align="center">
@@ -37,7 +37,7 @@ offline against the Fairy-Stockfish engine. All Lichess variants are supported.
 ## Main Features
 
 - Play online using your Lichess.org account
-- Play offline against the Fairy-Stockfish engine
+- Play offline against the Fairy-Stockfish or Maia engines
 - Supports playing all Lichess [variants](https://lichess.org/variant)
 - Theme the chess board and pieces to the colors of your choice
 - Theme UI components to the colors of your choice
@@ -142,5 +142,11 @@ please report any issues found and I will do my best to support.
 
 #### 5. Can I use a different chess engine?
 
-Playing offline vs the computer is _currently_ only directly compatible with the [Fairy-Stockfish](<https://fairy-stockfish.github.io/>) engine.
-For simplicity, the Fairy-Stockfish binaries come pre-built with cli-chess for Linux, Windows, and macOS _(x86-64 (and arm64 for macOS) architecture)_.
+Playing offline vs the computer is _currently_ only directly compatible with the [Fairy-Stockfish](<https://fairy-stockfish.github.io/>)
+and [Maia](<https://maiachess.com/>) engines. Maia runs on top of [lc0](<https://github.com/LeelaChessZero/lc0>) (Leela Chess Zero) and is
+trained to play in a human-like way at a chosen rating level, rather than searching for the objectively strongest move - making it a
+great practice partner for intermediate players. For simplicity, the Fairy-Stockfish and lc0/Maia binaries and weights come pre-built
+with cli-chess for Linux, Windows, and macOS _(x86-64 (and arm64 for macOS) architecture)_.
+
+Both Fairy-Stockfish and lc0 are licensed under the GPL, matching cli-chess's own license. See the `NOTICE.md` files alongside the
+vendored binaries in `src/cli_chess/modules/engine/binaries/` for attribution details.

@@ -14,8 +14,18 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from cli_chess.menus.main_menu import MainMenuPresenter
 
-package_metadata = metadata("cli-chess")
-github_page = package_metadata["Home-page"]
+
+def _get_github_page() -> str:
+    """Returns the project homepage URL from package metadata"""
+    package_metadata = metadata("cli-chess")
+    for project_url in package_metadata.get_all("Project-URL") or []:
+        label, _, url = project_url.partition(",")
+        if label.strip() == "Homepage":
+            return url.strip()
+    return ""
+
+
+github_page = _get_github_page()
 
 
 class MainMenuView(MenuView):

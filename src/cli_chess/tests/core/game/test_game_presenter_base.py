@@ -20,13 +20,14 @@ def save_spy(monkeypatch, tmp_path):
 @pytest.fixture
 def presenter(monkeypatch, save_spy):
     from cli_chess.core.game.offline_game import offline_game_model
-    monkeypatch.setattr(offline_game_model, "EngineModel", Mock())
+    mock_engine_model = Mock()
+    mock_engine_model.return_value.get_display_name.return_value = "Fairy-Stockfish"
+    monkeypatch.setattr(offline_game_model, "EngineModel", mock_engine_model)
 
     game_parameters = {
         GameOption.COLOR: "white",
         GameOption.VARIANT: "standard",
-        GameOption.COMPUTER_SKILL_LEVEL: 1,
-        GameOption.SPECIFY_ELO: False,
+        GameOption.ENGINE: "fairy-stockfish",
         GameOption.COMPUTER_ELO: 1500,
     }
     return OfflineGamePresenter(OfflineGameModel(game_parameters))

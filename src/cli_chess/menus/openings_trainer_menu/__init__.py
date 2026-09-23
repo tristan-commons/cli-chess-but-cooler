@@ -1,0 +1,3 @@
+from .openings_trainer_menu_model import OpeningsTrainerMenuModel, RepertoireColor
+from .openings_trainer_menu_view import OpeningsTrainerMenuView
+from .openings_trainer_menu_presenter import OpeningsTrainerMenuPresenter
