@@ -60,12 +60,21 @@ jobs:
         run: |
           pip install meson ninja
 
+      # lc0's build.cmd is an interactive, hand-edited helper (hardcoded CUDA
+      # paths, a `pause`) rather than a flag-driven CLI script like build.sh -
+      # call meson/ninja directly instead, same as the Linux/macOS jobs, after
+      # loading the MSVC dev environment for cl.exe/link.exe.
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
       # blas=true with openblas/mkl/dnnl all disabled falls back to the
       # header-only bundled Eigen backend - no runtime BLAS dependency
       # on the end-user's machine.
       - name: Build lc0 (Eigen backend)
         run: |
-          python build.py -Ddefault_library=static -Dblas=true -Dopenblas=false -Dmkl=false -Ddnnl=false -Dopencl=false -Dcudnn=false -Donednn=false -Donnx=false -Dgtest=false
+          meson setup build/release --backend ninja --buildtype release -Ddefault_library=static -Dblas=true -Dopenblas=false -Dmkl=false -Ddnnl=false -Dopencl=false -Dcudnn=false -Donednn=false -Donnx=false -Dgtest=false
+          meson compile -C build/release
           copy build\release\lc0.exe ${{ env.binary }}.exe
 
       - uses: actions/upload-artifact@v4
