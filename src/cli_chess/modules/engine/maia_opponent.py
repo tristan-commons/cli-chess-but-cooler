@@ -1,9 +1,8 @@
 from cli_chess.modules.engine.engine_opponent import EngineOpponent
 from cli_chess.core.game.game_options import GameOption
-from cli_chess.utils import is_linux_os, is_windows_os, is_mac_os
+from cli_chess.utils import is_linux_os, is_mac_os
 import chess.engine
 from os import path
-import platform
 
 MAIA_RATING_LEVELS = list(range(1100, 2000, 100))
 MAIA_DEFAULT_RATING = 1500
@@ -16,10 +15,17 @@ class MaiaOpponent(EngineOpponent):
        (a node limit of 1) to produce its intended human-like moves.
     """
     def get_binary_path(self) -> str:
-        """Returns the path to the lc0 binary to use for this platform"""
-        binary_name = "lc0_x86-64_" + ("linux" if is_linux_os() else ("windows.exe" if is_windows_os() else "macos"))
-        if is_mac_os() and platform.machine() == "arm64":
+        """Returns the path to the lc0 binary to use for this platform.
+           lc0 is only vendored for macOS arm64 - GitHub's hosted macOS CI
+           runners are arm64-only now that Apple has discontinued Intel
+           Macs, so there is no practical way to build/vendor a macOS
+           x86-64 lc0 binary. Rosetta 2 lets the arm64 binary run on Intel
+           Macs still in use.
+        """
+        if is_mac_os():
             binary_name = "lc0_arm64_macos"
+        else:
+            binary_name = "lc0_x86-64_" + ("linux" if is_linux_os() else "windows.exe")
         return path.dirname(path.realpath(__file__)) + "/binaries/lc0/" + binary_name
 
     def get_configuration(self, game_parameters: dict) -> dict:

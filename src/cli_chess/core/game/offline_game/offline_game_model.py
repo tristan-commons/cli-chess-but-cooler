@@ -1,5 +1,4 @@
 from cli_chess.core.game import PlayableGameModelBase
-from cli_chess.modules.engine import EngineModel
 from cli_chess.core.game.game_options import GameOption
 from cli_chess.utils import EventTopics, log
 from cli_chess.utils.config import player_info_config
@@ -9,6 +8,13 @@ from typing import Optional, Dict
 
 class OfflineGameModel(PlayableGameModelBase):
     def __init__(self, game_parameters: dict):
+        # Imported locally to avoid a circular import: cli_chess.modules.engine
+        # imports cli_chess.core.game.game_options, which (via core.game's
+        # __init__) pulls in this module, which would otherwise import
+        # EngineModel back from cli_chess.modules.engine before it finishes
+        # initializing.
+        from cli_chess.modules.engine import EngineModel
+
         super().__init__(play_as_color=game_parameters[GameOption.COLOR],
                          variant=game_parameters[GameOption.VARIANT])
 

@@ -1,6 +1,5 @@
 from cli_chess.core.game.offline_game import OfflineGameModel, OfflineGameView
 from cli_chess.core.game import PlayableGamePresenterBase
-from cli_chess.modules.engine import EnginePresenter
 from cli_chess.utils.ui_common import change_views
 from cli_chess.utils import log, threaded, AlertType
 from chess import Termination, COLOR_NAMES, Color
@@ -14,6 +13,10 @@ def start_offline_game(game_parameters: dict):
 
 class OfflineGamePresenter(PlayableGamePresenterBase):
     def __init__(self, model: OfflineGameModel):
+        # Imported locally to avoid a circular import - see the matching
+        # comment in offline_game_model.py for the full explanation.
+        from cli_chess.modules.engine import EnginePresenter
+
         self.model = model
         self.engine_presenter = EnginePresenter(self.model.engine_model)
         super().__init__(model)
