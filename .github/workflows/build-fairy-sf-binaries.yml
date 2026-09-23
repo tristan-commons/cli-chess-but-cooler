@@ -31,7 +31,7 @@ jobs:
           make -j build COMP=gcc ARCH=x86-64 EXE=${{ env.binary }}
           strip ${{ env.binary }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dir-${{ env.binary }}
           path: src/${{ env.binary }}
@@ -54,7 +54,7 @@ jobs:
           make -j build COMP=mingw ARCH=x86-64 EXE=${{ env.binary }}.exe
           strip ${{ env.binary }}.exe
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dir-${{ env.binary }}
           path: src/${{ env.binary }}.exe
@@ -77,7 +77,7 @@ jobs:
           make -j build COMP=clang ARCH=x86-64 EXE=${{ env.binary }}
           strip ${{ env.binary }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dir-${{ env.binary }}
           path: src/${{ env.binary }}
@@ -100,7 +100,7 @@ jobs:
           make -j build COMP=clang ARCH=apple-silicon EXE=${{ env.binary }}
           strip ${{ env.binary }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dir-${{ env.binary }}
           path: src/${{ env.binary }}

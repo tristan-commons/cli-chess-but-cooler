@@ -39,7 +39,7 @@ jobs:
           strip build/release/lc0
           cp build/release/lc0 ${{ env.binary }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dir-${{ env.binary }}
           path: ${{ env.binary }}
@@ -68,7 +68,7 @@ jobs:
           python build.py -Ddefault_library=static -Dblas=true -Dopenblas=false -Dmkl=false -Ddnnl=false -Dopencl=false -Dcudnn=false -Donednn=false -Donnx=false -Dgtest=false
           copy build\release\lc0.exe ${{ env.binary }}.exe
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dir-${{ env.binary }}
           path: ${{ env.binary }}.exe
@@ -96,7 +96,7 @@ jobs:
           strip build/release/lc0
           cp build/release/lc0 ${{ env.binary }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dir-${{ env.binary }}
           path: ${{ env.binary }}
@@ -124,7 +124,7 @@ jobs:
           strip build/release/lc0
           cp build/release/lc0 ${{ env.binary }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dir-${{ env.binary }}
           path: ${{ env.binary }}
