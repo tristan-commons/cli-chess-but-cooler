@@ -82,36 +82,12 @@ jobs:
           name: dir-${{ env.binary }}
           path: ${{ env.binary }}.exe
 
-  macos_x86-64:
-    runs-on: macos-13
-    env:
-      binary: lc0_x86-64_macos
-    steps:
-      - name: Clone lc0 @ tag:${{ inputs.lc0_tag }}
-        uses: actions/checkout@master
-        with:
-          repository: LeelaChessZero/lc0
-          ref: refs/tags/${{ inputs.lc0_tag }}
-          submodules: recursive
-
-      - name: Install build dependencies
-        run: |
-          brew install meson ninja
-
-      # Accelerate is a system framework built into macOS - no extra install needed.
-      - name: Build lc0 (Accelerate-backed BLAS)
-        run: |
-          ./build.sh -Ddefault_library=static -Dblas=true -Dopenblas=false -Dmkl=false -Ddnnl=false -Dopencl=false -Dcudnn=false -Donednn=false -Donnx=false -Dgtest=false
-          strip build/release/lc0
-          cp build/release/lc0 ${{ env.binary }}
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dir-${{ env.binary }}
-          path: ${{ env.binary }}
-
+  # No macOS x86-64 job: GitHub's hosted macOS runners are arm64-only under
+  # free-tier labels now that Apple has discontinued Intel Macs. lc0 is only
+  # vendored for macOS arm64 (see MaiaOpponent.get_binary_path()); Rosetta 2
+  # covers the remaining Intel Macs still in use.
   macos_arm64:
-    runs-on: macos-14
+    runs-on: macos-15
     env:
       binary: lc0_arm64_macos
     steps:
@@ -144,7 +120,6 @@ jobs:
     needs:
       - linux_x86-64
       - windows_x86-64
-      - macos_x86-64
       - macos_arm64
     env:
       COMMIT_PATH: src/cli_chess/modules/engine/binaries/lc0
@@ -162,7 +137,7 @@ jobs:
       - name: Extract and make binaries executable
         run: |
           find dir-* -type f -exec mv -f '{}' ./ ';'
-          chmod +x lc0_x86-64_linux lc0_x86-64_macos lc0_arm64_macos
+          chmod +x lc0_x86-64_linux lc0_arm64_macos
           rm -rf dir-*
           ls -la
         working-directory: ${{ env.COMMIT_PATH }}
