@@ -69,6 +69,7 @@ class BoardModel:
         """
         self.board.reset()
         self.set_fen(self.initial_fen, notify=False)
+        self.highlight_move = chess.Move.null()
         self._game_over_result = None
 
         if notify:
