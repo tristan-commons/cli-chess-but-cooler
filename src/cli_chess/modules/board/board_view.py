@@ -9,31 +9,36 @@ if TYPE_CHECKING:
 
 
 class BoardView:
+    # A terminal character cell is roughly twice as tall as it is wide, so a
+    # SQUARE_WIDTH:SQUARE_HEIGHT ratio of 6:3 (2:1) renders close to visually
+    # square. SQUARE_WIDTH is even so str.center() pads one extra column on
+    # the right, offsetting piece glyphs whose ink sits left of their advance
+    # width's midpoint in some fonts.
+    SQUARE_WIDTH = 6
+    SQUARE_HEIGHT = 3
+
     def __init__(self, presenter: BoardPresenter, initial_board_output: list):
         self.presenter = presenter
         self.board_output = FormattedTextControl(HTML(self._build_output(initial_board_output)))
         self._container = self._create_container()
 
-    SQUARE_WIDTH = 5
-    SQUARE_HEIGHT = 3
-
     def _create_container(self):
         """Create the Board container"""
+        width = 1 + 8 * self.SQUARE_WIDTH
+        height = 1 + 8 * self.SQUARE_HEIGHT
         return Box(Window(
             self.board_output,
             always_hide_cursor=True,
-            width=D(max=1 + 8 * self.SQUARE_WIDTH, preferred=1 + 8 * self.SQUARE_WIDTH),
-            height=D(max=1 + 8 * self.SQUARE_HEIGHT, preferred=1 + 8 * self.SQUARE_HEIGHT)
+            width=D(max=width, preferred=width),
+            height=D(max=height, preferred=height)
         ), padding=1)
 
     def _build_output(self, board_output_list: list) -> str:
         """Returns a string containing the board output to be used for
            display. The string returned will contain HTML elements.
 
-           Each square renders as SQUARE_HEIGHT lines, SQUARE_WIDTH columns wide,
-           with the piece centered on the middle line. The width:height ratio per
-           square (6:3 = 2) matches a monospace terminal character's approximate
-           2:1 height:width aspect, keeping the overall board visually square.
+           Each square renders as SQUARE_HEIGHT lines, SQUARE_WIDTH columns
+           wide, with the piece centered on the middle line.
         """
         board_output_str = ""
         blank_line = " "

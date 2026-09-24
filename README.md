@@ -7,6 +7,29 @@ A highly customizable way to play chess in your terminal. Supports playing onlin
 offline against the Fairy-Stockfish or Maia engines. All Lichess variants are supported.
 </p>
 
+## About this fork
+
+This is a fork of [trevorbayless/cli-chess](https://github.com/trevorbayless/cli-chess), all credit for
+the original project goes to Trevor Bayless. It's a great piece of software, and this fork exists to
+scratch a few personal itches rather than replace it.
+
+The main goals here are an openings trainer for drilling your own repertoire, and support for engines
+that play more like a human than a perfect calculator, starting with Maia. There are also some cosmetic
+changes to how the board renders, more on that below.
+
+## What's different from upstream
+
+- **Openings trainer.** Load a PGN of your own opening repertoire and get quizzed on it, move by move.
+- **Maia support.** Maia runs on top of lc0 and plays in a human-like style tuned to a given rating,
+  instead of just searching for the objectively best move every time. Good for practicing against
+  something that actually loses like a person would, plays mistakes a person would make, etc.
+- **Board and piece rendering tweaks.** The board layout was reworked to center pieces properly in
+  each square and to give the pieces a bit more visual weight. See the font note below, this was
+  tuned specifically around Cascadia Mono.
+
+Everything else, online play, all the Lichess variants, custom styling, blindfold mode, is inherited
+from upstream and works the same way.
+
 <p align="center">
     <a href="https://github.com/trevorbayless/cli-chess/actions/">
         <img alt="CI Workflow" src="https://github.com/trevorbayless/cli-chess/actions/workflows/ci.yml/badge.svg?branch=master&event=push">
@@ -37,7 +60,8 @@ offline against the Fairy-Stockfish or Maia engines. All Lichess variants are su
 ## Main Features
 
 - Play online using your Lichess.org account
-- Play offline against the Fairy-Stockfish or Maia engines
+- Play offline against Fairy-Stockfish or Maia
+- Drill your own opening repertoire with the openings trainer
 - Supports playing all Lichess [variants](https://lichess.org/variant)
 - Theme the chess board and pieces to the colors of your choice
 - Theme UI components to the colors of your choice
@@ -46,6 +70,13 @@ offline against the Fairy-Stockfish or Maia engines. All Lichess variants are su
 - Watch Lichess TV
 - Chat with your opponent
 - PGN exports of completed games
+
+## A note on fonts
+
+This fork's board and piece layout was designed and tuned against **Cascadia Mono**. That's the font
+you'll want if you want the board to look the way it's meant to look, pieces centered in their squares,
+sized well, board close to square. Other monospace fonts will still work fine, but the piece alignment
+math was based on Cascadia Mono's specific character proportions, so your mileage with other fonts will vary.
 
 ## Getting started
 
@@ -68,6 +99,21 @@ steps will only need to be run once as cli-chess will remember the API token.
 3. Click "Create"
 4. Highlight and copy the token
 5. Run cli-chess using the following command: `cli-chess --token ****` _(replace *'s with your API token)_
+
+## Openings Trainer
+
+The openings trainer quizzes you on your own repertoire, using PGN files you provide. You'll need one
+file for White and one for Black:
+
+- `~/.config/cli-chess/repertoires/White.pgn`
+- `~/.config/cli-chess/repertoires/Black.pgn`
+
+Each file should be a PGN with your repertoire as the variation tree, mainline plus any sidelines you
+want covered. If you don't already have these lying around, a tool like [chessbook](https://github.com/ArjixWasTaken/chessbook)
+can generate them for you from your existing games or a repertoire you build up over time.
+
+Once a repertoire file is in place, pick "Openings Trainer" from the offline games menu, choose White
+or Black, and it'll start walking you through your own lines.
 
 ## Custom styling
 
@@ -131,8 +177,9 @@ As cli-chess is a terminal-based program, it has been designed to be used
 with a monospace type font. A monospace font should always be used in order for
 character alignment to be consistent. The display of cli-chess can change drastically
 depending on the font being used, so it's important to choose a font that works best
-for your terminal and display preferences. The fonts that I have found to work best with
-cli-chess for piece alignment are `Ubuntu Mono`, `MS Gothic`, and `NSimSun`.
+for your terminal and display preferences. This fork's board layout was tuned specifically
+for `Cascadia Mono`, so that's the recommendation here. If you're on upstream cli-chess
+instead, `Ubuntu Mono`, `MS Gothic`, and `NSimSun` were the fonts found to work best there.
 
 #### 4. What operating systems are supported?
 

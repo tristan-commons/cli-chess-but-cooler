@@ -7,24 +7,24 @@ default = {
     "file-label": "fg:gray",
 
     "light-square": "bg:cadetblue",
-    "light-square.light-piece": f"fg:{light_piece_color}",
-    "light-square.dark-piece": f"fg:{dark_piece_color}",
+    "light-square.light-piece": f"fg:{light_piece_color} ",
+    "light-square.dark-piece": f"fg:{dark_piece_color} ",
 
     "dark-square": "bg:darkslateblue",
-    "dark-square.light-piece": f"fg:{light_piece_color}",
-    "dark-square.dark-piece": f"fg:{dark_piece_color}",
+    "dark-square.light-piece": f"fg:{light_piece_color} ",
+    "dark-square.dark-piece": f"fg:{dark_piece_color} ",
 
     "last-move": "bg:yellowgreen",
-    "last-move.light-piece": f"fg:{light_piece_color}",
-    "last-move.dark-piece": f"fg:{dark_piece_color}",
+    "last-move.light-piece": f"fg:{light_piece_color} ",
+    "last-move.dark-piece": f"fg:{dark_piece_color} ",
 
     "pre-move": "bg:darkorange",
-    "pre-move.light-piece": f"fg:{light_piece_color}",
-    "pre-move.dark-piece": f"fg:{dark_piece_color}",
+    "pre-move.light-piece": f"fg:{light_piece_color} ",
+    "pre-move.dark-piece": f"fg:{dark_piece_color} ",
 
     "in-check": "bg:red",
-    "in-check.light-piece": f"fg:{light_piece_color}",
-    "in-check.dark-piece": f"fg:{dark_piece_color}",
+    "in-check.light-piece": f"fg:{light_piece_color} ",
+    "in-check.dark-piece": f"fg:{dark_piece_color} ",
 
     "material-difference": "fg:gray",
     "move-list": "fg:gray",
@@ -62,12 +62,12 @@ default = {
     "label.neutral.banner": "bg:slategray fg:white",
 
     "text-area.input": "fg:orangered bold",
-    "text-area.input.placeholder": "italic",
+    "text-area.input.placeholder": "",
     "text-area.prompt": "fg:white bg:darkcyan bold noinherit",
 
     "validation-toolbar": "fg:white bg:darkred",
 
     "notation-help.header": "fg:black bg:lightgreen bold",
     "notation-help.section.title": "fg:white bold",
-    "notation-help.section.info": "fg:dimgray italic",
+    "notation-help.section.info": "fg:dimgray ",
 }
