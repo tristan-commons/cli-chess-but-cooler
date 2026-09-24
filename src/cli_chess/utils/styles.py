@@ -14,9 +14,13 @@ default = {
     "dark-square.light-piece": f"fg:{light_piece_color} ",
     "dark-square.dark-piece": f"fg:{dark_piece_color} ",
 
-    "last-move": "bg:yellowgreen",
-    "last-move.light-piece": f"fg:{light_piece_color} ",
-    "last-move.dark-piece": f"fg:{dark_piece_color} ",
+    "last-move-light": "bg:yellowgreen",
+    "last-move-light.light-piece": f"fg:{light_piece_color} ",
+    "last-move-light.dark-piece": f"fg:{dark_piece_color} ",
+
+    "last-move-dark": "bg:olivedrab",
+    "last-move-dark.light-piece": f"fg:{light_piece_color} ",
+    "last-move-dark.dark-piece": f"fg:{dark_piece_color} ",
 
     "pre-move": "bg:darkorange",
     "pre-move.light-piece": f"fg:{light_piece_color} ",

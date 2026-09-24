@@ -160,11 +160,10 @@ class BoardPresenter:
 
         show_board_highlights = self.game_config_values[game_config.Keys.SHOW_BOARD_HIGHLIGHTS]
         if show_board_highlights:
-            # TODO: Lighten last move square color if on light square
             try:
                 last_move = self.model.get_highlight_move()
                 if bool(last_move) and (square == last_move.to_square or square == last_move.from_square):
-                    square_color = "last-move"
+                    square_color = "last-move-light" if square_color == "light-square" else "last-move-dark"
 
                 premove_highlight = self.model.premove_highlight
                 if bool(premove_highlight) and (square == premove_highlight.from_square or square == premove_highlight.to_square):

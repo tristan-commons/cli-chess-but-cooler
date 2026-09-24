@@ -24,7 +24,7 @@ class BoardView:
 
     def _create_container(self):
         """Create the Board container"""
-        width = 1 + 8 * self.SQUARE_WIDTH
+        width = 2 + 8 * self.SQUARE_WIDTH
         height = 1 + 8 * self.SQUARE_HEIGHT
         return Box(Window(
             self.board_output,
@@ -41,26 +41,32 @@ class BoardView:
            wide, with the piece centered on the middle line.
         """
         board_output_str = ""
-        blank_line = " "
+        blank_line = ""
         piece_line = ""
+        gutter_label = ""
 
         for square in board_output_list:
             square_style = f"{square['square_display_color']}.{square['piece_display_color']}"
             piece_str = square['piece_str'].center(self.SQUARE_WIDTH)
             blank_str = " " * self.SQUARE_WIDTH
 
-            piece_line += f"<rank-label>{square['rank_label']}</rank-label>"
-            piece_line += f"<{square_style}>{piece_str}</{square_style}>"
+            if not piece_line:
+                gutter_label = square['rank_label'] or " "
 
+            piece_line += f"<{square_style}>{piece_str}</{square_style}>"
             blank_line += f"<{square['square_display_color']}>{blank_str}</{square['square_display_color']}>"
 
             if square['is_end_of_rank']:
-                board_output_str += f"{blank_line}\n{piece_line}\n{blank_line}\n"
-                blank_line = " "
+                board_output_str += (
+                    f"<rank-label>  </rank-label>{blank_line}\n"
+                    f"<rank-label>{gutter_label} </rank-label>{piece_line}\n"
+                    f"<rank-label>  </rank-label>{blank_line}\n"
+                )
+                blank_line = ""
                 piece_line = ""
 
-        file_labels = " " + self._center_file_labels(self.presenter.get_file_labels())
-        board_output_str += f"<file-label>{file_labels}</file-label>"
+        file_labels = self._center_file_labels(self.presenter.get_file_labels())
+        board_output_str += f"<rank-label> </rank-label><file-label>{file_labels}</file-label>"
 
         return board_output_str
 
@@ -68,7 +74,7 @@ class BoardView:
     def _center_file_labels(cls, file_labels: str) -> str:
         """Returns the file labels with each letter centered in a
            SQUARE_WIDTH-char cell, matching the piece cells above"""
-        return "".join(letter.center(cls.SQUARE_WIDTH) for letter in file_labels.split())
+        return " " + "".join(letter.center(cls.SQUARE_WIDTH) for letter in file_labels.split())
 
     def update(self, board_output_list: list):
         """Updates the board output with the passed in text"""

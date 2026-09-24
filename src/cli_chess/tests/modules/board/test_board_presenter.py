@@ -247,7 +247,8 @@ def test_get_square_display_color(model: BoardModel, presenter: BoardPresenter, 
 
         # Test last move squares
         elif square == last_move.to_square or square == last_move.from_square:
-            assert presenter.get_square_display_color(square) == "last-move"
+            expected = "last-move-light" if model.is_light_square(square) else "last-move-dark"
+            assert presenter.get_square_display_color(square) == expected
 
         # Test light square
         elif model.is_light_square(square):
